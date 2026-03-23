@@ -1,38 +1,33 @@
 import pandas as pd
 
-def transform_outages(df: pd.DataFrame):
+
+def transform_outages(df: pd.DataFrame) -> pd.DataFrame:
+    """Limpia y estandariza el DataFrame crudo."""
     df = df.copy()
+    df["period"] = pd.to_datetime(df["period"])
 
-    # Crear ID
-    df["outage_id"] = range(1, len(df) + 1)
-
-    # Renombrar columna para consistencia
+    # Renombrar a snake_case
     df = df.rename(columns={"percentOutage": "percent_outage"})
 
-    outages = df[[
-        "outage_id",
-        "period",
-        "capacity",
-        "outage",
-        "percent_outage"
-    ]]
+    # Descartar filas con valores nulos en métricas
+    df = df.dropna(subset=["capacity", "outage", "percent_outage"])
 
-    return outages
+    return df[["period", "capacity", "outage", "percent_outage"]].reset_index(drop=True)
 
 
-def create_aggregations(df: pd.DataFrame):
+def create_aggregations(df: pd.DataFrame) -> pd.DataFrame:
+    """Genera estadísticas anuales desde el DataFrame limpio."""
     df = df.copy()
+    df["year"] = pd.to_datetime(df["period"]).dt.year
 
-    df["year"] = df["period"].dt.year
+    pct_col = "percent_outage" if "percent_outage" in df.columns else "percentOutage"
 
-    stats = df.groupby("year").agg({
-        "outage": "mean",
-        "percentOutage": "mean"
-    }).reset_index()
+    stats = df.groupby("year").agg(
+        avg_outage_mw      = ("outage",  "mean"),
+        avg_percent_outage = (pct_col,   "mean"),
+        max_outage_mw      = ("outage",  "max"),
+        min_outage_mw      = ("outage",  "min"),
+        record_count       = ("outage",  "count"),
+    ).reset_index()
 
-    stats = stats.rename(columns={
-        "outage": "avg_outage",
-        "percentOutage": "avg_percent_outage"
-    })
-
-    return stats
+    return stats.round(2)

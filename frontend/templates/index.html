@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nuclear Outages Dashboard</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <span class="header-icon">⚛</span>
+        <div>
+          <h1>Nuclear Outages</h1>
+          <p class="header-sub">EIA Open Data Pipeline</p>
+        </div>
+      </div>
+      <button id="btn-refresh" onclick="triggerRefresh()">
+        <span id="refresh-icon">↻</span> Refresh Data
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Stats bar -->
+    <section class="stats-bar" id="stats-bar">
+      <div class="stat-card">
+        <span class="stat-label">Total Records</span>
+        <span class="stat-value" id="stat-total">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Date Range</span>
+        <span class="stat-value" id="stat-range">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Avg Outage</span>
+        <span class="stat-value" id="stat-avg">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Last Updated</span>
+        <span class="stat-value" id="stat-updated">—</span>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+      <div class="filter-group">
+        <label>From</label>
+        <input type="date" id="filter-from" onchange="applyFilters()" />
+      </div>
+      <div class="filter-group">
+        <label>To</label>
+        <input type="date" id="filter-to" onchange="applyFilters()" />
+      </div>
+      <div class="filter-group">
+        <label>Min outage (MW)</label>
+        <input type="number" id="filter-outage" placeholder="e.g. 5000" onchange="applyFilters()" />
+      </div>
+      <div class="filter-group">
+        <label>Rows per page</label>
+        <select id="filter-limit" onchange="applyFilters()">
+          <option value="25">25</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <button class="btn-clear" onclick="clearFilters()">Clear</button>
+    </section>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Table -->
+    <section class="table-section">
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span>Loading data...</span>
+      </div>
+
+      <div id="error-state" class="empty-state hidden">
+        <span class="empty-icon">⚠</span>
+        <p id="error-msg">Something went wrong.</p>
+        <button onclick="loadData()">Try again</button>
+      </div>
+
+      <div id="empty-state" class="empty-state hidden">
+        <span class="empty-icon">📭</span>
+        <p>No data available. Click <strong>Refresh Data</strong> to fetch from the EIA API.</p>
+      </div>
+
+      <div id="table-wrapper">
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortBy('period')"    class="sortable">Date <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('capacity')"  class="sortable">Capacity (MW) <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('outage')"    class="sortable">Outage (MW) <span class="sort-icon">↕</span></th>
+              <th onclick="sortBy('percent_outage')" class="sortable">% Outage <span class="sort-icon">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+  </main>
+
+  <script src="../static/js/app.js"></script>
+</body>
+</html>
