@@ -1,0 +1,134 @@
+<svg width="900" height="420" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="12">
+
+  <rect width="900" height="420" fill="#f0f0f0"/>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#ddd" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="420" fill="url(#grid)"/>
+
+  <!-- ── outages ──────────────────────────────────────────── -->
+  <rect x="52" y="52" width="230" height="262" rx="3" fill="#aaa" opacity="0.3"/>
+  <rect x="50" y="50" width="230" height="262" rx="3" fill="white" stroke="#999" stroke-width="1"/>
+  <rect x="50" y="50" width="230" height="24" rx="3" fill="#6d9eeb"/>
+  <rect x="50" y="62" width="230" height="12" fill="#6d9eeb"/>
+  <rect x="58" y="56" width="14" height="12" rx="1" fill="white" opacity="0.9"/>
+  <rect x="60" y="59" width="10" height="1.5" fill="#6d9eeb"/>
+  <rect x="60" y="62" width="10" height="1.5" fill="#6d9eeb"/>
+  <rect x="60" y="65" width="7" height="1.5" fill="#6d9eeb"/>
+  <text x="78" y="66" font-weight="bold" font-size="13" fill="white">outages</text>
+
+  <rect x="50" y="74" width="230" height="22" fill="white"/>
+  <line x1="50" y1="74" x2="280" y2="74" stroke="#ccc" stroke-width="0.5"/>
+  <circle cx="64" cy="85" r="5" fill="none" stroke="#f0c040" stroke-width="1.5"/>
+  <rect x="67" y="84" width="6" height="2" fill="#f0c040"/>
+  <rect x="71" y="84" width="2" height="4" fill="#f0c040"/>
+  <text x="80" y="89" fill="#333">period DATE</text>
+
+  <rect x="50" y="96" width="230" height="22" fill="#f9f9f9"/>
+  <line x1="50" y1="96" x2="280" y2="96" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="62,103 68,103 65,109" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="80" y="111" fill="#333">capacity DECIMAL(10,2)</text>
+
+  <rect x="50" y="118" width="230" height="22" fill="white"/>
+  <line x1="50" y1="118" x2="280" y2="118" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="62,125 68,125 65,131" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="80" y="133" fill="#333">outage DECIMAL(10,2)</text>
+
+  <rect x="50" y="140" width="230" height="22" fill="#f9f9f9"/>
+  <line x1="50" y1="140" x2="280" y2="140" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="62,147 68,147 65,153" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="80" y="155" fill="#333">percent_outage DECIMAL(6,4)</text>
+
+  <rect x="50" y="162" width="230" height="22" fill="white"/>
+  <line x1="50" y1="162" x2="280" y2="162" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="62,169 68,169 65,175" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="80" y="177" fill="#333">ingested_at DATETIME</text>
+
+  <rect x="50" y="184" width="230" height="22" fill="#d9d9d9"/>
+  <line x1="50" y1="184" x2="280" y2="184" stroke="#999" stroke-width="0.5"/>
+  <text x="58" y="199" font-weight="bold" fill="#555" font-size="11">Indexes</text>
+  <polygon points="258,191 268,191 263,199" fill="#888"/>
+
+  <rect x="50" y="206" width="230" height="22" fill="white"/>
+  <line x1="50" y1="206" x2="280" y2="206" stroke="#ccc" stroke-width="0.5"/>
+  <text x="58" y="221" fill="#333">PRIMARY</text>
+
+  <rect x="50" y="228" width="230" height="22" fill="#f9f9f9"/>
+  <line x1="50" y1="228" x2="280" y2="228" stroke="#ccc" stroke-width="0.5"/>
+  <text x="58" y="243" fill="#333">idx_percent</text>
+
+  <rect x="50" y="50" width="230" height="262" rx="3" fill="none" stroke="#999" stroke-width="1"/>
+
+  <!-- ── outage_stats ──────────────────────────────────────── -->
+  <rect x="552" y="52" width="255" height="284" rx="3" fill="#aaa" opacity="0.3"/>
+  <rect x="550" y="50" width="255" height="284" rx="3" fill="white" stroke="#999" stroke-width="1"/>
+  <rect x="550" y="50" width="255" height="24" rx="3" fill="#6d9eeb"/>
+  <rect x="550" y="62" width="255" height="12" fill="#6d9eeb"/>
+  <rect x="558" y="56" width="14" height="12" rx="1" fill="white" opacity="0.9"/>
+  <rect x="560" y="59" width="10" height="1.5" fill="#6d9eeb"/>
+  <rect x="560" y="62" width="10" height="1.5" fill="#6d9eeb"/>
+  <rect x="560" y="65" width="7" height="1.5" fill="#6d9eeb"/>
+  <text x="578" y="66" font-weight="bold" font-size="13" fill="white">outage_stats</text>
+
+  <rect x="550" y="74" width="255" height="22" fill="white"/>
+  <line x1="550" y1="74" x2="805" y2="74" stroke="#ccc" stroke-width="0.5"/>
+  <circle cx="564" cy="85" r="5" fill="none" stroke="#f0c040" stroke-width="1.5"/>
+  <rect x="567" y="84" width="6" height="2" fill="#f0c040"/>
+  <rect x="571" y="84" width="2" height="4" fill="#f0c040"/>
+  <text x="580" y="89" fill="#333">year SMALLINT</text>
+
+  <rect x="550" y="96" width="255" height="22" fill="#f9f9f9"/>
+  <line x1="550" y1="96" x2="805" y2="96" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="562,103 568,103 565,109" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="580" y="111" fill="#333">avg_outage_mw DECIMAL(10,2)</text>
+
+  <rect x="550" y="118" width="255" height="22" fill="white"/>
+  <line x1="550" y1="118" x2="805" y2="118" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="562,125 568,125 565,131" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="580" y="133" fill="#333">avg_percent_outage DECIMAL(6,4)</text>
+
+  <rect x="550" y="140" width="255" height="22" fill="#f9f9f9"/>
+  <line x1="550" y1="140" x2="805" y2="140" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="562,147 568,147 565,153" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="580" y="155" fill="#333">max_outage_mw DECIMAL(10,2)</text>
+
+  <rect x="550" y="162" width="255" height="22" fill="white"/>
+  <line x1="550" y1="162" x2="805" y2="162" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="562,169 568,169 565,175" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="580" y="177" fill="#333">min_outage_mw DECIMAL(10,2)</text>
+
+  <rect x="550" y="184" width="255" height="22" fill="#f9f9f9"/>
+  <line x1="550" y1="184" x2="805" y2="184" stroke="#ccc" stroke-width="0.5"/>
+  <polygon points="562,191 568,191 565,197" fill="#7ec8e3" stroke="#5ab8d3" stroke-width="0.5"/>
+  <text x="580" y="199" fill="#333">total_records INT</text>
+
+  <rect x="550" y="206" width="255" height="22" fill="#d9d9d9"/>
+  <line x1="550" y1="206" x2="805" y2="206" stroke="#999" stroke-width="0.5"/>
+  <text x="558" y="221" font-weight="bold" fill="#555" font-size="11">Indexes</text>
+  <polygon points="763,213 773,213 768,221" fill="#888"/>
+
+  <rect x="550" y="228" width="255" height="22" fill="white"/>
+  <line x1="550" y1="228" x2="805" y2="228" stroke="#ccc" stroke-width="0.5"/>
+  <text x="558" y="243" fill="#333">PRIMARY</text>
+
+  <rect x="550" y="50" width="255" height="284" rx="3" fill="none" stroke="#999" stroke-width="1"/>
+
+  <!-- ── Relationship line ─────────────────────────────────── -->
+  <line x1="280" y1="140" x2="550" y2="107" stroke="#f4a030" stroke-width="1.5"/>
+
+  <!-- Crow's foot — many side (outages) -->
+  <line x1="280" y1="140" x2="298" y2="131" stroke="#f4a030" stroke-width="1.5"/>
+  <line x1="280" y1="140" x2="298" y2="149" stroke="#f4a030" stroke-width="1.5"/>
+  <line x1="294" y1="131" x2="294" y2="149" stroke="#f4a030" stroke-width="1.5"/>
+
+  <!-- Single bar — one side (outage_stats) -->
+  <line x1="550" y1="101" x2="550" y2="114" stroke="#f4a030" stroke-width="1.5"/>
+  <line x1="543" y1="101" x2="543" y2="114" stroke="#f4a030" stroke-width="1.5"/>
+
+  <!-- Relationship label -->
+  <rect x="340" y="110" width="200" height="18" rx="3" fill="white" stroke="#e0c090" stroke-width="1"/>
+  <text x="440" y="123" text-anchor="middle" font-size="11" fill="#a07030">agrupado por YEAR(period)</text>
+
+</svg>

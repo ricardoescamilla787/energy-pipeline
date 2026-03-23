@@ -1,6 +1,6 @@
 # Pipeline de Nuclear Outages
 
-Pipeline de datos que extrae información de Nuclear Outages de EE.UU. desde la API de EIA, la almacena en archivos Parquet, la expone mediante una API REST y la presenta en un dashboard web.
+Pipeline de datos que extrae información de Nuclear Outages de EE.UU. desde la API abierta de EIA, la almacena en archivos Parquet, la expone mediante una API REST y la presenta en un dashboard web.
 
 ---
 
@@ -13,6 +13,8 @@ Este proyecto implementa un pipeline completo de datos en 4 partes:
 - **Part 3 — API REST**: expone los datos mediante 3 endpoints construidos con Flask
 - **Part 4 — Dashboard web**: interfaz que consume la API y presenta los datos con filtros, ordenamiento y paginación
 
+El sistema funciona en dos modos — **local** sin configuración extra, y **nube** usando Railway + Supabase.
+
 ---
 
 ## Requisitos previos
@@ -20,7 +22,10 @@ Este proyecto implementa un pipeline completo de datos en 4 partes:
 - Python 3.11 o superior
 - pip
 - Git
-- Clave de API de EIA https://www.eia.gov/opendata/
+- Clave de API de EIA 
+- Cuenta en Supabase 
+- Cuenta en Railway 
+
 ---
 
 ## Tecnologías utilizadas
@@ -29,8 +34,11 @@ Este proyecto implementa un pipeline completo de datos en 4 partes:
 - **pandas** — manipulación y transformación de datos
 - **Parquet** — almacenamiento eficiente de datos
 - **Flask** — servidor de la API REST
+- **Gunicorn** — servidor WSGI para producción
 - **pytest** — tests automatizados
 - **HTML / CSS / JavaScript** — dashboard web
+- **Supabase Storage** — almacenamiento persistente de Parquets en la nube
+- **Railway** — despliegue del API en la nube
 
 ---
 
@@ -49,7 +57,7 @@ challenge_energy/
 │   │   │   ├── extractor.py    # extracción paginada desde la API de EIA
 │   │   │   ├── validator.py    # validación de campos requeridos
 │   │   │   ├── transformer.py  # limpieza y agregación de datos
-│   │   │   ├── storage.py      # lectura y escritura de archivos Parquet
+│   │   │   ├── storage.py      # lectura y escritura local y en Supabase
 │   │   │   └── pipeline.py     # orquestador del pipeline completo
 │   │   │
 │   │   └── utils/
@@ -61,10 +69,7 @@ challenge_energy/
 │   │   ├── test_parquet.py     # tests del modelo de datos
 │   │   └── test_api.py         # tests de los endpoints del API
 │   │
-│   ├── data/                   # archivos Parquet generados (no se sube a Git)
-│   │   ├── outages_raw.parquet
-│   │   ├── outages_clean.parquet
-│   │   └── outage_stats.parquet
+│   ├── data/                   # archivos Parquet locales 
 │   │
 │   ├── api.py                  # API REST con Flask
 │   ├── run.py                  # punto de entrada del pipeline
@@ -79,7 +84,8 @@ challenge_energy/
 │       └── js/app.js
 │
 ├── er_diagram.svg              # diagrama entidad-relación
-├── .env                        # variables de entorno (no se sube a Git)
+├── Procfile                    # configuración de arranque para Railway
+├── .env                        # variables de entorno
 ├── .env.example                # plantilla del archivo .env
 ├── .gitignore
 ├── requirements.txt
@@ -88,26 +94,36 @@ challenge_energy/
 
 ---
 
-## Configuración de la API key
+## Configuración de variables de entorno
 
-1. Obtén la clave en [https://www.eia.gov/opendata/]
-2. Copia el archivo de ejemplo:
+Copia el archivo de ejemplo:
 ```bash
 cp .env.example .env
 ```
-3. Abre `.env` y reemplaza el valor:
+
+Abre `.env` y configura los valores:
+
 ```
-EIA_API_KEY=tu_clave_aqui
+# Clave de la API de EIA — obligatoria siempre
+# Obtén una gratis en: https://www.eia.gov/opendata/
+EIA_API_KEY=tu_clave_de_eia
+
+# Credenciales de Supabase — solo necesarias para modo nube
+# Obtén estos valores en: Supabase → Settings → API Keys
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_KEY=tu_service_role_key
 ```
+
+Si no configuras las variables de Supabase el sistema corre en modo local guardando los Parquets en `backend/data/`.
 
 ---
 
-## Inicio rápido
+## Inicio rápido — modo local
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/energy-pipeline.git
+git clone https://github.com/ricardoescamilla787/energy-pipeline.git
 cd energy-pipeline
 ```
 
@@ -124,7 +140,7 @@ cd backend
 python run.py
 ```
 
-Esto descarga los datos históricos desde la API de EIA (2007–hoy) y genera los archivos Parquet en `backend/data/`.
+Descarga los datos históricos desde la API de EIA (2007–hoy) y genera los archivos Parquet en `backend/data/`.
 
 ### 4. Iniciar el API
 
@@ -139,7 +155,7 @@ El API queda disponible en `http://localhost:5000`.
 
 ### 5. Abrir el dashboard
 
-Abre el archivo `frontend/templates/index.html` en tu navegador. En Windows:
+Abre `frontend/templates/index.html` en tu navegador. En Windows:
 
 ```bash
 start frontend/templates/index.html
@@ -150,6 +166,62 @@ start frontend/templates/index.html
 ```bash
 cd backend
 pytest tests/ -v
+```
+
+---
+
+## Despliegue en la nube
+
+El sistema usa **Railway** para el API y **Supabase** para el almacenamiento de los Parquets.
+
+### Requisitos previos
+
+- Cuenta en [Railway](https://railway.app) conectada a GitHub
+- Proyecto en [Supabase](https://supabase.com) con un bucket llamado `parquet-data`
+
+### 1. Configurar Supabase
+
+1. Crea un proyecto en Supabase
+2. Ve a **Storage** y crea un bucket llamado `parquet-data`
+3. Ve a **Settings → API Keys → Legacy anon, service_role API keys**
+4. Copia la `service_role` key y la `Project URL`
+
+### 2. Desplegar en Railway
+
+1. Ve a [railway.app](https://railway.app) y crea un nuevo proyecto
+2. Selecciona **Deploy from GitHub repo**
+3. Selecciona el repositorio `energy-pipeline`
+4. En **Variables** agrega:
+
+```
+EIA_API_KEY=tu_clave_de_eia
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_KEY=tu_service_role_key
+```
+
+5. Railway detecta el `Procfile` y despliega automáticamente
+6. Una vez desplegado obtienes una URL pública como `https://energy-pipeline.up.railway.app`
+
+### 3. Cargar los datos iniciales
+
+Una vez desplegado llama al endpoint `/refresh` para cargar los datos:
+
+```bash
+curl -X POST https://tu-app.up.railway.app/refresh
+```
+
+O usa el botón **Refresh Data** en el dashboard.
+
+### 4. Actualizar el frontend para producción
+
+En `frontend/static/js/app.js` cambia la URL del API:
+
+```javascript
+// Local
+const API_BASE = "http://localhost:5000"
+
+// Nube
+const API_BASE = "https://tu-app.up.railway.app"
 ```
 
 ---
@@ -249,7 +321,7 @@ Devuelve las estadísticas anuales precalculadas.
 
 ## Modelo de datos
 
-El modelo tiene 2 tablas guardadas como archivos Parquet. Se encuentran en`schema.sql` y `er_diagram.svg` ahi podemos ver el esquema completo y las relaciones.
+El modelo tiene 2 tablas guardadas como archivos Parquet. Ver `schema.sql` y `er_diagram.svg` para el esquema completo y las relaciones.
 
 **`outages`** — un registro por día
 
@@ -276,12 +348,13 @@ El modelo tiene 2 tablas guardadas como archivos Parquet. Se encuentran en`schem
 
 ## Supuestos asumidos
 
-- La API de EIA publica un registro diario.
+- La API de EIA publica un registro diario por el total de la flota nuclear de EE.UU.
 - El campo `period` se usa como clave primaria natural — la API garantiza un registro único por día.
-- La extracción incremental se basa en el último `period` guardado localmente — en ejecuciones posteriores solo se descargan registros más recientes que el último guardado.
+- La extracción incremental se basa en el último `period` guardado — en ejecuciones posteriores solo se descargan registros más recientes que el último guardado.
 - Los datos históricos disponibles en la API comienzan desde 2007, no desde 2003 como indica el selector del dashboard de EIA.
 - Se eligió el dataset de U.S. Nuclear Outages por ser el agregado nacional — responde directamente la pregunta del negocio sin la complejidad de los niveles facility o generator.
-- El frontend se conecta a `http://localhost:5000` por defecto.
+- El frontend se conecta a `http://localhost:5000` por defecto en modo local. En producción hay que actualizar `API_BASE` en `app.js`.
+- En modo local los Parquets se guardan en `backend/data/`. En modo nube se guardan en Supabase Storage.
 
 ---
 
