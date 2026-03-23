@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000";
+const API_BASE = "web-production-43799.up.railway.app";
 
 // Estado de la app
 let currentPage  = 1;
