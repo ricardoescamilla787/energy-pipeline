@@ -1,6 +1,6 @@
 # Pipeline de Nuclear Outages
 
-Pipeline de datos que extrae información de Nuclear Outages de EE.UU. desde la API abierta de EIA, la almacena en archivos Parquet, la expone mediante una API REST y la presenta en un dashboard web.
+Pipeline de datos que extrae información de Nuclear Outages de EE.UU. desde la API abierta de EIA, la almacena en archivos Parquet, la expone mediante una API REST y la presenta en un dashboard web interactivo.
 
 ---
 
@@ -17,14 +17,26 @@ El sistema funciona en dos modos — **local** sin configuración extra, y **nub
 
 ---
 
+## Demo en producción
+
+API desplegada en Railway:
+
+```
+GET  https://web-production-43799.up.railway.app/data
+GET  https://web-production-43799.up.railway.app/stats
+POST https://web-production-43799.up.railway.app/refresh
+```
+
+---
+
 ## Requisitos previos
 
 - Python 3.11 o superior
 - pip
 - Git
-- Clave de API de EIA 
-- Cuenta en Supabase 
-- Cuenta en Railway 
+- Clave de API de EIA
+- Cuenta en Supabase (solo para despliegue en la nube)
+- Cuenta en Railway (solo para despliegue en la nube)
 
 ---
 
@@ -74,7 +86,7 @@ challenge_energy/
 │   ├── api.py                  # API REST con Flask
 │   ├── run.py                  # punto de entrada del pipeline
 │   ├── schema.sql              # esquema de referencia para MySQL
-│   └── pipeline.log            # log de ejecuciones (generado automáticamente)
+│   └── pipeline.log            # log de ejecuciones 
 │
 ├── frontend/
 │   ├── templates/
@@ -110,11 +122,7 @@ EIA_API_KEY=tu_clave_de_eia
 
 # Credenciales de Supabase — solo necesarias para modo nube
 # Obtén estos valores en: Supabase → Settings → API Keys
-SUPABASE_URL=https://tu-proyecto.supabase.co
-SUPABASE_KEY=tu_service_role_key
-```
-
-Si no configuras las variables de Supabase el sistema corre en modo local guardando los Parquets en `backend/data/`.
+SUPABASE_URL=https://pfawamnrwofutlrrnjff.supabase.co el sistema corre en modo local guardando los Parquets en `backend/data/`.
 
 ---
 
@@ -124,7 +132,7 @@ Si no configuras las variables de Supabase el sistema corre en modo local guarda
 
 ```bash
 git clone https://github.com/ricardoescamilla787/energy-pipeline.git
-cd energy-pipeline
+cd challenge_energy
 ```
 
 ### 2. Instalar dependencias
@@ -190,27 +198,25 @@ El sistema usa **Railway** para el API y **Supabase** para el almacenamiento de 
 
 1. Ve a [railway.app](https://railway.app) y crea un nuevo proyecto
 2. Selecciona **Deploy from GitHub repo**
-3. Selecciona el repositorio `energy-pipeline`
+3. Selecciona el repositorio `energy-pipeline` (nombre en GitHub)
 4. En **Variables** agrega:
 
 ```
 EIA_API_KEY=tu_clave_de_eia
-SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_URL=https://pfawamnrwofutlrrnjff.supabase.co
 SUPABASE_KEY=tu_service_role_key
 ```
 
 5. Railway detecta el `Procfile` y despliega automáticamente
-6. Una vez desplegado obtienes una URL pública como `https://energy-pipeline.up.railway.app`
+6. URL pública del proyecto: `https://web-production-43799.up.railway.app`
 
 ### 3. Cargar los datos iniciales
 
 Una vez desplegado llama al endpoint `/refresh` para cargar los datos:
 
 ```bash
-curl -X POST https://tu-app.up.railway.app/refresh
+curl -X POST https://web-production-43799.up.railway.app/refresh
 ```
-
-O usa el botón **Refresh Data** en el dashboard.
 
 ### 4. Actualizar el frontend para producción
 
@@ -221,7 +227,7 @@ En `frontend/static/js/app.js` cambia la URL del API:
 const API_BASE = "http://localhost:5000"
 
 // Nube
-const API_BASE = "https://tu-app.up.railway.app"
+const API_BASE = "https://web-production-43799.up.railway.app"
 ```
 
 ---
@@ -242,7 +248,7 @@ Devuelve los registros de interrupciones paginados y filtrados.
 
 **Ejemplo de petición:**
 ```
-GET /data?date_from=2024-01-01&date_to=2024-12-31&limit=25&page=1
+GET https://web-production-43799.up.railway.app/data?date_from=2024-01-01&date_to=2024-12-31&limit=25&page=1
 ```
 
 **Ejemplo de respuesta:**

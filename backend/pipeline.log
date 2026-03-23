@@ -410,3 +410,31 @@
 2026-03-23 00:23:57,335 - INFO - Estadísticas guardadas: 20 registros
 2026-03-23 00:23:57,335 - INFO - Pipeline completado — 7019 registros nuevos procesados
 2026-03-23 00:23:57,349 - INFO - Resultado: {'status': 'success', 'records': 7019, 'period_from': '2007-01-01', 'period_to': '2026-03-20'}
+2026-03-23 04:23:16,687 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-03-23 04:23:16,688 - INFO - [33mPress CTRL+C to quit[0m
+2026-03-23 04:23:16,690 - INFO -  * Restarting with stat
+2026-03-23 04:23:18,109 - WARNING -  * Debugger is active!
+2026-03-23 04:23:18,118 - INFO -  * Debugger PIN: 111-603-035
+2026-03-23 04:25:00,303 - INFO - Iniciando pipeline
+2026-03-23 04:25:00,303 - INFO - Descargando registros desde offset=0
+2026-03-23 04:25:08,916 - INFO - Descargando registros desde offset=5000
+2026-03-23 04:25:19,139 - WARNING - Intento 1/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:25:31,376 - WARNING - Intento 2/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:25:43,595 - WARNING - Intento 3/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:25:43,595 - ERROR - Todos los reintentos fallaron. Último error: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:25:43,596 - CRITICAL - Pipeline falló: No se pudo conectar después de 3 intentos: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:25:52,884 - INFO - Iniciando pipeline
+2026-03-23 04:25:52,884 - INFO - Descargando registros desde offset=0
+2026-03-23 04:26:03,115 - WARNING - Intento 1/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:26:15,926 - WARNING - Intento 2/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:26:28,143 - WARNING - Intento 3/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:26:28,143 - ERROR - Todos los reintentos fallaron. Último error: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:26:28,144 - CRITICAL - Pipeline falló: No se pudo conectar después de 3 intentos: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:35:11,511 - INFO - Iniciando pipeline
+2026-03-23 04:35:11,513 - INFO - Descargando registros desde offset=0
+2026-03-23 04:35:22,032 - WARNING - Intento 1/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:35:34,246 - WARNING - Intento 2/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:35:46,473 - WARNING - Intento 3/3 fallido: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:35:46,473 - ERROR - Todos los reintentos fallaron. Último error: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
+2026-03-23 04:35:46,474 - CRITICAL - Pipeline falló: No se pudo conectar después de 3 intentos: HTTPSConnectionPool(host='api.eia.gov', port=443): Read timed out. (read timeout=10)
